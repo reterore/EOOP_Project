@@ -2,8 +2,6 @@
 
 Client::Client(const string& n, const string& id) : name(n), clientID(id), next(NULL), rentedBike(NULL), rentalShop(NULL) {}
 
-Client::~Client() {
-}
 
 void Client::printClient() const {
     // You can print information about the client

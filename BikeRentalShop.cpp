@@ -258,6 +258,7 @@ bool BikeRentalShop::removeClient(Client* clientToRemove) {
     // Définir next sur NULL pour éviter les références invalides
     current->getNextClient() = NULL;
     current->setRentalShop(NULL);
+    current->changeBike(NULL);
 
     cout << "Client removed successfully!" << endl;
     return true;
@@ -333,6 +334,7 @@ bool BikeRentalShop::removeBike(Bike* bikeToRemove) {
     // Couper la connexion entre le vélo et le client s'il est associé à un client
     if (current->getUser() != NULL) {
         current->getUser()->changeBike(NULL);
+        current->changeUser(NULL);
     }
 
     // Si le vélo à supprimer est le premier de la liste

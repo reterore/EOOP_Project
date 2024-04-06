@@ -8,8 +8,6 @@ BikeRentalCompany::BikeRentalCompany() : head(NULL), shopNb(0) {
     // Initialise les membres de données
 }
 
-BikeRentalCompany::~BikeRentalCompany() {
-}
 
 
 

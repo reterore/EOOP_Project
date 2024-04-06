@@ -66,6 +66,5 @@ int main() {
     bikeRentalShop1.insertEmployee(&employee1);
     Main.print();
 
-
     return 0;
 }

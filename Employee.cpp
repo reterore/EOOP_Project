@@ -7,7 +7,7 @@ Employee::~Employee() {
 }
 
 void Employee::printEmployee() const {
-    cout << "Employee Name: " << name << " | Employee ID: " << employeeID << endl;
+    cout << "(ID:" << employeeID << ") | name: " << name <<endl;
 }
 
 const string& Employee::getName() const {
