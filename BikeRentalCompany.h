@@ -20,7 +20,6 @@ public:
     bool insertShop(BikeRentalShop* bikeRentalShop);
     bool removeShop(BikeRentalShop* bikeRentalShop);
     bool removeShop(const char* shopId);
-
 };
 
 
