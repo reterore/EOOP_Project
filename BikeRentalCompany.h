@@ -10,17 +10,19 @@
 
 class BikeRentalCompany {
 private:
-    BikeRentalShop* head;
-    int shopNb;
+    struct shopNode{
+        BikeRentalShop* shop;
+        shopNode* next;
+    };
+    int numberOfShops;
+    shopNode* head;
 public:
     BikeRentalCompany();
     ~BikeRentalCompany();
-    BikeRentalShop* getHead();
     void print();
     bool insertShop(BikeRentalShop* bikeRentalShop);
     bool removeShop(BikeRentalShop* bikeRentalShop);
-    bool removeShop(const char* shopId);
+    bool removeShop(const string& shopId);
 };
-
 
 #endif //EOOP_PROJECT_BIKERENTALCOMPANY_H

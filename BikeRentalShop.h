@@ -7,18 +7,30 @@
 
 class BikeRentalShop {
 private:
-    char* id; // Utiliser std::string serait plus sûr et pratique
-    Client* clientList;
-    Employee* employeeList;
-    Bike* bikeList;
-    BikeRentalShop* next;
+    string id;
+    struct clientNode{
+        Client* client;
+        Bike* bike;
+        clientNode* next;
+    };
+    clientNode* HeadClient;
+    struct employeeNode{
+        Employee* employee;
+        employeeNode* next;
+    };
+    employeeNode* HeadEmployee;
+    struct bikeNode{
+        Bike* bike;
+        Client* user;
+        bikeNode* next;
+    };
+    bikeNode* HeadBike;
 
 public:
-    BikeRentalShop(const char* shopId);
+    BikeRentalShop(const string& shopId);
     ~BikeRentalShop();
     void print() const;
-    char* getId();
-    BikeRentalShop*& getNextShop();
+    const string& getId() const;
     bool insertClient(Client* client);
     bool insertEmployee(Employee* employee);
     bool insertBike(Bike* bike);

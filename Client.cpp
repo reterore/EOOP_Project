@@ -1,17 +1,19 @@
 #include "Client.h"
+#include <iostream>
 
-Client::Client(const string& n, const string& id) : name(n), clientID(id), next(NULL), rentedBike(NULL), rentalShop(NULL) {}
+Client::Client(const string& n, const string& id) : name(n), clientID(id), rentalShopId("") {}
 
+Client::~Client() {
+    cout << "Client " << name << " (ID:" << clientID << ") destroyed!\n";
+}
 
 void Client::printClient() const {
-    // You can print information about the client
-    cout << "(ID:" << clientID << ") | name: " << name << endl;
-    if (rentedBike == NULL) {
-        cout << "No bike rented.";
-    } else {
-        cout << "A bike rented";
-    }
-    cout << endl;
+    cout << "- (ID:" << clientID << ") | name: " << name << endl;
+    cout << "  Rental shop ID: " << rentalShopId << endl;
+}
+
+void Client::setRentalShopId(const string& id) {
+    rentalShopId = id;
 }
 
 const string& Client::getName() const {
@@ -22,22 +24,6 @@ const string& Client::getClientID() const {
     return clientID;
 }
 
-Bike* Client::getBike() const {
-    return rentedBike;
-}
-
-Client*& Client::getNextClient()  {
-    return next;
-}
-
-void Client::setRentalShop(BikeRentalShop* shop) {
-    rentalShop = shop;
-}
-
-BikeRentalShop* Client::getRentalShop() const {
-    return rentalShop;
-}
-
-void Client::changeBike(Bike* rentedBike) {
-    this->rentedBike = rentedBike;
+const string& Client::getRentalShopId() const {
+    return rentalShopId;
 }

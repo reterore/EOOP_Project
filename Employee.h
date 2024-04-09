@@ -12,20 +12,15 @@ class Employee {
 private:
     string name;
     string employeeID;
-    Employee* next;
-    BikeRentalShop* rentalShop; // Pointeur vers le magasin associé
-
+    string rentalShopId; // Utilisation d'un objet string pour rentalShopId
 public:
     Employee(const string& n, const string& id);
     ~Employee();
 
     void printEmployee() const;
-
     const string& getName() const;
     const string& getEmployeeID() const;
-    Employee*& getNextEmployee();
-    void setRentalShop(BikeRentalShop* shop); // Setter pour le pointeur vers le magasin
-    BikeRentalShop* getRentalShop() const; // Getter pour le pointeur vers le magasin
+    const string& getRentalShopId() const; // Getter pour le magasin de location
 };
 
 #endif // EMPLOYEE_H

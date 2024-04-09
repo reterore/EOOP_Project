@@ -7,30 +7,21 @@
 using namespace std;
 
 class Bike;
-class BikeRentalShop; // Forward declaration
+class BikeRentalShop;
 
 class Client {
 private:
     string name;
     string clientID;
-    Bike* rentedBike;
-    Client* next;
-    BikeRentalShop* rentalShop; // Nouveau membre pour stocker le magasin associé
-
+    string rentalShopId;
 public:
     Client(const string& n, const string& id); // Ajout du pointeur vers le magasin
     ~Client();
-
+    void setRentalShopId(const string& id);
     void printClient() const;
-
     const string& getName() const;
     const string& getClientID() const;
-    Bike* getBike() const;
-    Client*& getNextClient();
-    void changeBike(Bike* rentedBike);
-    void setRentalShop(BikeRentalShop* shop);
-    // Ajoutez une fonction pour obtenir le magasin associé
-    BikeRentalShop* getRentalShop() const;
+    const string& getRentalShopId() const;
 };
 
 #endif // CLIENT_H

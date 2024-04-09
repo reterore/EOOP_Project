@@ -1,114 +1,113 @@
-//
-// Created by lucas on 25/03/2024.
-//
-
 #include "BikeRentalCompany.h"
+#include <iostream>
 
-BikeRentalCompany::BikeRentalCompany() : head(NULL), shopNb(0) {
-    // Initialise les membres de données
+BikeRentalCompany::BikeRentalCompany() : head(NULL) {
+    numberOfShops = 0;
 }
 
-
-
-
-BikeRentalShop* BikeRentalCompany::getHead(){
-    return head;
-}
-
-
-bool BikeRentalCompany::insertShop(BikeRentalShop* bikeRentalShop) {
-    if (bikeRentalShop == NULL) {
-        cout << "Invalid shop!" << endl;
-        return false;
-    }
-
-    if (head == NULL) {
-        head = bikeRentalShop;
-    } else {
-        BikeRentalShop* current = head;
-        while (current->getNextShop() != NULL) {
-            current = current->getNextShop();
-        }
-        current->getNextShop() = bikeRentalShop;
-    }
-    bikeRentalShop->getNextShop() = NULL; // Assurez-vous que le dernier magasin a son prochain pointeur à NULL
-    return true;
+BikeRentalCompany::~BikeRentalCompany() {
+    // Libère la mémoire allouée pour chaque magasin dans la liste
+    cout << "Bike Rental Company destroyed!\n";
 }
 
 void BikeRentalCompany::print() {
-    if (head != NULL){
-        BikeRentalShop* currentShop = head;
-        while (currentShop != NULL){
-            currentShop->print();
-            currentShop = currentShop->getNextShop();
-        }
-    } else {
-        cout << "No shop in the company!" << endl;
+    if (!head) {
+        cout << "No shops registered at the moment!" << endl;
+        return;
     }
+    cout << "Shops owned by the Company :| " << numberOfShops << " |\n";
+    shopNode* current = head;
+    while (current) {
+        current->shop->print();
+        cout << endl;
+        current = current->next;
+    }
+}
+
+bool BikeRentalCompany::insertShop(BikeRentalShop* bikeRentalShop) {
+    // Vérifie si le magasin existe déjà
+    shopNode* current = head;
+    if (!current) {
+        // Si la liste est vide, le nouveau magasin devient la tête de la liste
+        head = new shopNode;
+        head->shop = bikeRentalShop;
+        head->next = NULL;
+        cout << "insertion of " << bikeRentalShop->getId() << " shop!\n\n";
+        numberOfShops++;
+        return true;
+    }
+    while (current->next) {
+        if (current->shop->getId() == bikeRentalShop->getId()) {
+            cout << "There is already a shop in " << bikeRentalShop->getId() << endl;
+            return false;
+        }
+        current = current->next;
+    }
+    if (current->shop->getId() == bikeRentalShop->getId()) {
+        cout << "There is already a shop in " << bikeRentalShop->getId() << endl;
+        return false;
+    }
+    // Allocation d'un nouveau noeud
+    current->next = new shopNode;
+    current->next->shop = bikeRentalShop;
+    current->next->next = NULL;
+    cout << "insertion of " << bikeRentalShop->getId() << " shop!\n\n";
+    numberOfShops++;
+    return true;
 }
 
 bool BikeRentalCompany::removeShop(BikeRentalShop* bikeRentalShop) {
-    if (bikeRentalShop == NULL) {
-        cout << "Invalid shop!" << endl;
-        return false;
+    shopNode* current = head;
+    shopNode* prev = NULL;
+
+    // Parcourt la liste pour trouver le magasin à supprimer
+    while (current != NULL) {
+        if (current->shop == bikeRentalShop) {
+            // Le magasin a été trouvé
+            if (prev != NULL) {
+                // Le magasin n'est pas en tête de liste
+                prev->next = current->next;
+            } else {
+                // Le magasin est en tête de liste
+                head = current->next;
+            }
+            cout << "removal of " << bikeRentalShop->getId() << " shop!\n\n";
+            numberOfShops--;
+            return true;
+        }
+        prev = current;
+        current = current->next;
     }
 
-    BikeRentalShop* current = head;
-    BikeRentalShop* previous = NULL;
-
-    // Recherche du magasin à supprimer
-    while (current != NULL && current != bikeRentalShop) {
-        previous = current;
-        current = current->getNextShop();
-    }
-
-    // Si le magasin n'a pas été trouvé
-    if (current == NULL) {
-        cout << "Shop not found!" << endl;
-        return false;
-    }
-
-    // Si le magasin à supprimer est la tête de la liste
-    if (previous == NULL) {
-        head = current->getNextShop();
-    } else {
-        // Si le magasin à supprimer n'est pas la tête de la liste
-        previous->getNextShop() = current->getNextShop();
-    }
-
-    cout << "Shop removed successfully!" << endl;
-    return true;
+    // Le magasin n'a pas été trouvé dans la liste
+    cout << "This shop is not registered!\n";
+    return false;
 }
 
-bool BikeRentalCompany::removeShop(const char* shopId) {
-    if (head == NULL) {
-        cout << "No shops in the company!" << endl;
-        return false;
+bool BikeRentalCompany::removeShop(const string& shopId) {
+    shopNode* current = head;
+    shopNode* prev = NULL;
+
+    // Parcourt la liste pour trouver le magasin à supprimer
+    while (current != NULL) {
+        if (current->shop->getId() == shopId) {
+            // Le magasin a été trouvé
+            if (prev != NULL) {
+                // Le magasin n'est pas en tête de liste
+                prev->next = current->next;
+            } else {
+                // Le magasin est en tête de liste
+                head = current->next;
+            }
+            cout << "removal of " << shopId << " shop!\n\n";
+            numberOfShops--;
+            return true;
+        }
+        prev = current;
+        current = current->next;
     }
 
-    BikeRentalShop* current = head;
-    BikeRentalShop* previous = NULL;
-
-    // Recherche du magasin à supprimer
-    while (current != NULL && strcmp(current->getId(), shopId) != 0) {
-        previous = current;
-        current = current->getNextShop();
-    }
-
-    // Si le magasin n'a pas été trouvé
-    if (current == NULL) {
-        cout << "Shop with ID " << shopId << " not found!" << endl;
-        return false;
-    }
-
-    // Si le magasin à supprimer est la tête de la liste
-    if (previous == NULL) {
-        head = current->getNextShop();
-    } else {
-        // Si le magasin à supprimer n'est pas la tête de la liste
-        previous->getNextShop() = current->getNextShop();
-    }
-
-    cout << "Shop with ID " << shopId << " removed successfully!" << endl;
-    return true;
+    // Le magasin n'a pas été trouvé dans la liste
+    cout << "This shop is not registered!\n";
+    return false;
 }

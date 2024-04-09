@@ -1,47 +1,22 @@
 #include "Bike.h"
 
 // Constructeur
-Bike::Bike(const string& model, const string& id, int dailyRentalPrice) : model(model), id(id), dailyRentalPrice(dailyRentalPrice), nextBike(NULL), user(NULL), rentalShop(NULL) {}
+Bike::Bike(const string& model, const string& id, int dailyRentalPrice) : model(model), id(id), dailyRentalPrice(dailyRentalPrice) {
+    // Aucun besoin de l'allocation dynamique de mémoire pour les objets string
+}
 
+// Destructeur
 Bike::~Bike() {
+    cout << "Bike model " << model << " (ID:" << id << ") destroyed!\n";
 }
 
+// Méthode pour afficher les détails du vélo
 void Bike::printBike() const {
-    cout << "Model: " << model;
-    cout << " (ID:" << id << ")" << endl;
-    cout << "Daily Rental Price: " << dailyRentalPrice << endl;
-    if (user) {
-        cout << "Currently rented by: " << user->getName() << endl;
-    } else {
-        cout << "Currently not rented" << endl;
-    }
+    cout << "- Model: " << model << " (ID:" << id << ")" << endl;
+    cout << "  Daily Rental Price: " << dailyRentalPrice << endl;
 }
 
-Bike*& Bike::getNextBike() {
-    return nextBike;
-}
-
-Client* Bike::getUser() const {
-    return user;
-}
-
-bool Bike::getRentalInfo() const {
-    if (user){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-BikeRentalShop* Bike::getRentalShop() const{
-    return rentalShop;
-}
-
-void Bike::setRentalShop(BikeRentalShop* shop) {
-    rentalShop = shop;
-}
-
-void Bike::changeUser(Client* client) {
-    // On change simplement le pointeur vers le nouveau client
-    user = client;
+// Méthode pour obtenir le magasin de location associé au vélo
+const string& Bike::getRentalShopId() const {
+    return rentalShopId;
 }
