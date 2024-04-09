@@ -2,15 +2,15 @@
 #define BIKE_H
 
 #include <iostream>
-#include <string> // Inclure la bibliothèque pour les objets string
-#include "Client.h" // Assurez-vous d'inclure le fichier d'en-tête de la classe Client si nécessaire
+#include <string>
+#include "Client.h"
 
 class Bike {
 private:
     string model;
     string id;
     int dailyRentalPrice;
-    string rentalShopId; // Utilisation d'un objet string pour rentalShopId
+    string rentalShopId;
 
 public:
     // Constructeur
@@ -22,8 +22,11 @@ public:
     // Méthode pour afficher les détails du vélo
     void printBike() const;
 
-    // Méthode pour obtenir le magasin de location associé au vélo
-    const string& getRentalShopId() const;
+    // Getters
+    const string& getModel() const { return model; }
+    const string& getId() const { return id; }
+    int getDailyRentalPrice() const { return dailyRentalPrice; }
+    const string& getRentalShopId() const { return rentalShopId; }
 };
 
 #endif // BIKE_H

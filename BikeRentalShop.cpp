@@ -1,5 +1,4 @@
 #include "BikeRentalShop.h"
-#include <cstring>
 #include <iostream>
 
 BikeRentalShop::BikeRentalShop(const string& shopId) : HeadClient(NULL), HeadEmployee(NULL), HeadBike(NULL), id(shopId){
@@ -35,10 +34,10 @@ void BikeRentalShop::print() const {
         while (currentClient) {
             cout << "_______________________________" << endl;
             currentClient->client->printClient();
-            if(currentClient->bike){
-                cout << "  Renting : " << currentClient->bike << " (ID:" << currentClient->bike << ")\n";
+            if (currentClient->bike) {
+                cout << "  Renting : " << currentClient->bike->getModel() << " (ID:" << currentClient->bike->getId() << ")\n";
             } else {
-                cout << "  Does not rent any bike.\n";
+                cout << "  Does not rent any bike\n";
             }
             currentClient = currentClient->next;
         }
@@ -54,6 +53,11 @@ void BikeRentalShop::print() const {
         while (currentBike) {
             cout << "_______________________________" << endl;
             currentBike->bike->printBike();
+            if (currentBike->user) {
+                cout << "  Rented by " << currentBike->user->getName() << " (ID:" << currentBike->user->getClientID() << ")\n";
+            } else {
+                cout << "  Available for clients\n";
+            }
             currentBike = currentBike->next;
         }
     } else {
@@ -62,6 +66,7 @@ void BikeRentalShop::print() const {
     cout << "_______________________________" << endl;
 }
 
+
 const string& BikeRentalShop::getId() const {
     return id;
 }
@@ -69,7 +74,7 @@ const string& BikeRentalShop::getId() const {
 bool BikeRentalShop::insertEmployee(Employee* employee) {
     // Vérifier si l'employé est valide
     if (!employee) {
-        cout << "Error: Invalid employee." << endl;
+        cout << "Error: Invalid employee" << endl;
         return false;
     }
 
@@ -153,3 +158,42 @@ bool BikeRentalShop::insertBike(Bike* bike) {
     currentBike->next->next = NULL;
     return true;
 }
+
+bool BikeRentalShop::rent(Client* client, Bike* bike) {
+    
+    if (!client || !bike) {
+        cout << "Error: Invalid client or bike." << endl;
+        return false;
+    }
+    clientNode* myClientNode = HeadClient;
+    bikeNode* myBikeNode = HeadBike;
+    while (myClientNode && myClientNode->client != client){
+        myClientNode = myClientNode->next;
+    }
+    if (!myClientNode){
+        cout << "Error: Client not registered in this shop!\n";
+        return false;
+    }
+    while (myBikeNode && myBikeNode->bike != bike){
+        myBikeNode = myBikeNode->next;
+    }
+    if (!myBikeNode){
+        cout << "Error: Bike not registered in this shop!\n";
+        return false;
+    }
+    // Vérifier si le client est déjà en train de louer un vélo
+    if (myClientNode->bike) {
+        cout << "Error: This client is already renting a bike." << endl;
+        return false;
+    }
+    if (myBikeNode->user) {
+        cout << "Error: This bike is already rented." << endl;
+        return false;
+    }
+    myBikeNode->user = client;
+    myClientNode->bike = bike;
+    cout << client->getName() <<" successfuly rented the bike" << endl;
+    return false;
+}
+
+

@@ -49,11 +49,18 @@ int main() {
     bikeRentalShop2.insertBike(&bike3);
     Bike bike4("BMX", "4", 20);
     bikeRentalShop2.insertBike(&bike4);
-
     Main.print();
 
     print_test();
+    bikeRentalShop1.rent(&client1, &bike1);
+    bikeRentalShop1.rent(NULL, &bike1);
+    bikeRentalShop1.rent(&client1, NULL);
+    bikeRentalShop1.rent(&client1, &bike1);
+    bikeRentalShop1.rent(&client2, &bike1);
+    bikeRentalShop1.rent(&client3, &bike1);
+    bikeRentalShop1.rent(&client3, &bike1);
 
+    print_test();
     Main.removeShop(&bikeRentalShop2);
     Main.print();
 

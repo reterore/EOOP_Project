@@ -13,10 +13,5 @@ Bike::~Bike() {
 // Méthode pour afficher les détails du vélo
 void Bike::printBike() const {
     cout << "- Model: " << model << " (ID:" << id << ")" << endl;
-    cout << "  Daily Rental Price: " << dailyRentalPrice << endl;
-}
-
-// Méthode pour obtenir le magasin de location associé au vélo
-const string& Bike::getRentalShopId() const {
-    return rentalShopId;
+    cout << "  Daily Rental Price: " << dailyRentalPrice << "$" <<endl;
 }
