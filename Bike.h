@@ -24,9 +24,10 @@ public:
 
     // Getters
     const string& getModel() const { return model; }
-    const string& getId() const { return id; }
+    const string& getBikeId() const { return id; }
     int getDailyRentalPrice() const { return dailyRentalPrice; }
     const string& getRentalShopId() const { return rentalShopId; }
+    void setRentalShopId(const string& id);
 };
 
 #endif // BIKE_H

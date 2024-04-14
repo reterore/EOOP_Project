@@ -62,7 +62,38 @@ int main() {
 
     print_test();
     Main.removeShop(&bikeRentalShop2);
+    bikeRentalShop1.stopRental(&client1);
     Main.print();
+
+    print_test();// ICI
+    BikeRentalShop bikeRentalShopTest("Test");
+    // Créer des employés
+    Employee emp1("John", "E1");
+    Employee emp2("Alice", "E2");
+    bikeRentalShopTest.insertEmployee(&emp1);
+    bikeRentalShopTest.insertEmployee(&emp2);
+    Client clientTest("Bob", "C1");
+    bikeRentalShopTest.insertClient(&clientTest);
+    Bike bikeTest("Mountain Bike", "B1", 20);
+    bikeRentalShopTest.insertBike(&bikeTest);
+    bikeRentalShopTest.print();
+
+    bikeRentalShopTest.removeEmployee(&emp1);
+    bikeRentalShopTest.removeEmployee(&emp2);
+    bikeRentalShopTest.removeClient(&clientTest);
+    bikeRentalShopTest.removeBike(&bikeTest);
+    bikeRentalShopTest.print();
+
+    bikeRentalShopTest.insertEmployee(&employee1);
+    bikeRentalShopTest.insertClient(&client1);
+    bikeRentalShopTest.insertBike(&bike1);
+
+    bikeRentalShopTest.print();
+    bikeRentalShop1.print();
+
+    print_test();
+
+    bikeRentalShop1.insertEmployee(&employee1);
 
     cout << endl;
     cout << "End of code, destruction of the objects:\n";

@@ -30,11 +30,14 @@ public:
     BikeRentalShop(const string& shopId);
     ~BikeRentalShop();
     void print() const;
-    const string& getId() const;
+    const string& getId() const { return id;}
     bool insertClient(Client* client);
     bool insertEmployee(Employee* employee);
     bool insertBike(Bike* bike);
+    template<typename T>
+    bool insert(T* data);
     bool rent(Client* client, Bike* bike);
+    bool stopRental(Client* client);
     bool removeClient(Client* client);
     bool removeEmployee(Employee* employee);
     bool removeBike(Bike* bike);

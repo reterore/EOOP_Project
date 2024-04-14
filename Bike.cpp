@@ -1,8 +1,9 @@
 #include "Bike.h"
 
 // Constructeur
-Bike::Bike(const string& model, const string& id, int dailyRentalPrice) : model(model), id(id), dailyRentalPrice(dailyRentalPrice) {
-    // Aucun besoin de l'allocation dynamique de mémoire pour les objets string
+Bike::Bike(const string& model, const string& id, int dailyRentalPrice) : model(model), id(id),
+    dailyRentalPrice(dailyRentalPrice), rentalShopId("") {
+
 }
 
 // Destructeur
@@ -14,4 +15,8 @@ Bike::~Bike() {
 void Bike::printBike() const {
     cout << "- Model: " << model << " (ID:" << id << ")" << endl;
     cout << "  Daily Rental Price: " << dailyRentalPrice << "$" <<endl;
+}
+
+void Bike::setRentalShopId(const string& id) {
+    rentalShopId = id;
 }

@@ -19,9 +19,9 @@ public:
     ~Client();
     void setRentalShopId(const string& id);
     void printClient() const;
-    const string& getName() const;
-    const string& getClientID() const;
-    const string& getRentalShopId() const;
+    const string& getName() const {return name;}
+    const string& getClientID() const {return clientID;}
+    const string& getRentalShopId() const {return rentalShopId;}
 };
 
 #endif // CLIENT_H
