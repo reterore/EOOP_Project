@@ -1,27 +1,35 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
-#include <string>
 #include <iostream>
 
 using namespace std;
 
-class BikeRentalShop; // Déclaration anticipée de la classe BikeRentalShop
+class BikeRentalShop; // Forward declaration of the BikeRentalShop class
 
 class Employee {
 private:
-    string name;
-    string employeeId;
-    string rentalShopId; // Utilisation d'un objet string pour rentalShopId
+    char* name;
+    char* employeeId;
+    char* rentalShopId; // Using a char* object for rentalShopId
+
+    friend class BikeRentalShop; // to access data from bikeRentalShop methods
+
 public:
-    Employee(const string& n, const string& id);
+    // Constructor to initialize an Employee object with provided name and ID
+    Employee(const char* n, const char* id);
+
+    // Destructor to clean up resources associated with the Employee object
     ~Employee();
 
+    // Method to print the details of the employee
     void printEmployee() const;
-    const string& getName() const {return name;}
-    const string& getEmployeeID() const {return employeeId;}
-    const string& getRentalShopId() const {return rentalShopId;} // Getter pour le magasin de location
-    void setRentalShopId(const string& id);
+
+    // Getter methods to retrieve information about the employee
+    const char* getName() const {return name;}
+    const char* getEmployeeID() const {return employeeId;}
+    const char* getRentalShopId() const {return rentalShopId;} // Getter for the rental shop
+
 };
 
 #endif // EMPLOYEE_H

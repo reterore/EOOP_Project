@@ -7,18 +7,21 @@
 
 class BikeRentalShop {
 private:
-    string id;
+    char* id;
+    // Node structure to handle clients
     struct clientNode{
         Client* client;
         Bike* bike;
         clientNode* next;
     };
     clientNode* HeadClient;
+    // Node structure to handle employees
     struct employeeNode{
         Employee* employee;
         employeeNode* next;
     };
     employeeNode* HeadEmployee;
+    // Node structure to handle bikes
     struct bikeNode{
         Bike* bike;
         Client* user;
@@ -27,20 +30,36 @@ private:
     bikeNode* HeadBike;
 
 public:
-    BikeRentalShop(const string& shopId);
+    // Constructor to initialize a BikeRentalShop object with provided shop ID
+    BikeRentalShop(const char* shopId);
+
+    // Destructor to clean up resources associated with the BikeRentalShop object
     ~BikeRentalShop();
+
+    // Method to print details of the bike rental shop
     void print() const;
-    const string& getId() const { return id;}
-    bool insertClient(Client* client);
-    bool insertEmployee(Employee* employee);
-    bool insertBike(Bike* bike);
-    template<typename T>
-    bool insert(T* data);
+
+    // Getter method to retrieve the ID of the bike rental shop
+    const char* getId() const { return id;}
+
+    // Methods to insert a client, employee, or bike into the shop
+    bool insert(Client* client);
+    bool insert(Employee* employee);
+    bool insert(Bike* bike);
+
+    // Method to rent a bike to a client
     bool rent(Client* client, Bike* bike);
+
+    // Method to stop rental of a bike by a client
     bool stopRental(Client* client);
-    bool removeClient(Client* client);
-    bool removeEmployee(Employee* employee);
-    bool removeBike(Bike* bike);
+
+    // Method to stop rental of a bike
+    bool stopRental(Bike* bike);
+
+    // Methods to remove a client, employee, or bike from the shop
+    bool remove(Client* client);
+    bool remove(Employee* employee);
+    bool remove(Bike* bike);
 };
 
 #endif // EOOP_PROJECT_BIKERENTALSHOP_H

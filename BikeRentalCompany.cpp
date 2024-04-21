@@ -6,8 +6,13 @@ BikeRentalCompany::BikeRentalCompany() : head(NULL) {
 }
 
 BikeRentalCompany::~BikeRentalCompany() {
-    // Libère la mémoire allouée pour chaque magasin dans la liste
-    cout << "Bike Rental Company destroyed!\n";
+    cout << "Destruction of the Company:\n";
+    shopNode* currentShop = head;
+    while (currentShop) {
+        shopNode* temp = currentShop;
+        currentShop = currentShop->next;
+        delete temp;
+    }
 }
 
 void BikeRentalCompany::print() {
@@ -106,8 +111,7 @@ bool BikeRentalCompany::removeShop(const string& shopId) {
         prev = current;
         current = current->next;
     }
-
-    // Le magasin n'a pas été trouvé dans la liste
     cout << "This shop is not registered!\n";
     return false;
 }
+

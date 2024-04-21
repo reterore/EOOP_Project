@@ -1,27 +1,35 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <string>
 #include <iostream>
 
 using namespace std;
 
-class Bike;
-class BikeRentalShop;
+class Bike; // Forward declaration of the Bike class
+class BikeRentalShop; // Forward declaration of the BikeRentalShop class
 
 class Client {
 private:
-    string name;
-    string clientID;
-    string rentalShopId;
+    char* name;
+    char* clientID;
+    char* rentalShopId; // Rental shop ID for the client
+
+    friend class BikeRentalShop; // to access data from bikeRentalShop methods
+
 public:
-    Client(const string& n, const string& id); // Ajout du pointeur vers le magasin
+    // Constructor to initialize a Client object with provided name and ID
+    Client(const char* name, const char* id);
+
+    // Destructor to clean up resources associated with the Client object
     ~Client();
-    void setRentalShopId(const string& id);
+
+    // Method to print the details of the client
     void printClient() const;
-    const string& getName() const {return name;}
-    const string& getClientID() const {return clientID;}
-    const string& getRentalShopId() const {return rentalShopId;}
+
+    // Getter methods to retrieve information about the client
+    const char* getName() const {return name;}
+    const char* getClientID() const {return clientID;}
+    const char* getRentalShopId() const {return rentalShopId;}
 };
 
 #endif // CLIENT_H

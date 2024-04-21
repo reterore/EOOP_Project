@@ -1,13 +1,52 @@
 #include "BikeRentalShop.h"
 #include <iostream>
+#include "cstring"
 
-
-BikeRentalShop::BikeRentalShop(const string& shopId) : HeadClient(NULL), HeadEmployee(NULL), HeadBike(NULL), id(shopId){
+BikeRentalShop::BikeRentalShop(const char* shopId) : HeadClient(NULL), HeadEmployee(NULL), HeadBike(NULL) {
+    if (!shopId) {
+        // Default Id
+        this->id = new char[strlen("DefaultShopId") + 1];
+        strcpy(this->id, "DefaultShopId");
+    } else {
+        this->id = new char[strlen(shopId) + 1];
+        strcpy(this->id, shopId);
+    }
 }
+
 
 BikeRentalShop::~BikeRentalShop() {
+
     cout << "Bike shop of " << getId() << " destroyed!\n";
+    // Libérer la mémoire allouée pour l'ID
+    delete[] id;
+
+
+
+    // Parcourir et libérer la mémoire pour la liste des employés
+    employeeNode* currentEmployee = HeadEmployee;
+    while (currentEmployee) {
+        employeeNode* temp = currentEmployee;
+        currentEmployee = currentEmployee->next;
+        delete temp; // Supprimer le nœud
+    }
+
+    // Parcourir et libérer la mémoire pour la liste des clients
+    clientNode* currentClient = HeadClient;
+    while (currentClient) {
+        clientNode* temp = currentClient;
+        currentClient = currentClient->next;
+        delete temp; // Supprimer le nœud
+    }
+
+    // Parcourir et libérer la mémoire pour la liste des vélos
+    bikeNode* currentBike = HeadBike;
+    while (currentBike) {
+        bikeNode* temp = currentBike;
+        currentBike = currentBike->next;
+        delete temp; // Supprimer le nœud
+    }
 }
+
 
 void BikeRentalShop::print() const {
     cout << "_______________________________" << endl;
@@ -67,17 +106,17 @@ void BikeRentalShop::print() const {
     cout << "_______________________________" << endl;
 }
 
-bool BikeRentalShop::insertEmployee(Employee* employee) {
+bool BikeRentalShop::insert(Employee* employee) {
     // Vérifier si l'employé est valide
     if (!employee) {
         cout << "Error: Invalid employee" << endl;
         return false;
     }
-    if (employee->getRentalShopId() != "") {
+    if (strcmp(employee->getRentalShopId(), "") != 0) {
         cout << "Error: Employee " << employee->getName() << " (ID:"<< employee->getEmployeeID() <<") already affiliated in a rental shop (" << employee->getRentalShopId()<<")." << endl;
         return false;
     }
-    employee->setRentalShopId(id);
+    employee->rentalShopId = id;
     // Si la liste d'employés est vide, ajoutez l'employé comme premier élément
     if (!HeadEmployee) {
         HeadEmployee = new employeeNode;
@@ -99,19 +138,19 @@ bool BikeRentalShop::insertEmployee(Employee* employee) {
     return true;
 }
 
-bool BikeRentalShop::insertClient(Client* client) {
+bool BikeRentalShop::insert(Client* client) {
     // Vérifier si le client est valide
     if (!client) {
         cout << "Error: Invalid client." << endl;
         return false;
     }
 
-    if (client->getRentalShopId() != "") {
+    if (strcmp(client->getRentalShopId(), "") != 0) {
         cout << "Error: Client " << client->getName() << " (ID:"<< client->getClientID() <<") already affiliated in a rental shop (" << client->getRentalShopId()<<")." << endl;
         return false;
     }
 
-    client->setRentalShopId(id);
+    client->rentalShopId = id;
     // Si la liste de clients est vide, ajoutez le client comme premier élément
     if (!HeadClient) {
         HeadClient = new clientNode;
@@ -135,18 +174,21 @@ bool BikeRentalShop::insertClient(Client* client) {
     return true;
 }
 
-bool BikeRentalShop::insertBike(Bike* bike) {
+bool BikeRentalShop::insert(Bike* bike) {
     // Vérifier si le vélo est valide
     if (!bike) {
         cout << "Error: Invalid bike." << endl;
         return false;
     }
 
-    if (bike->getRentalShopId() != "") {
-        cout << "Error: Bike " << bike->getModel() << " (ID:"<< bike->getBikeId() <<") already affiliated in a rental shop (" << bike->getRentalShopId()<<")." << endl;
+    // Vérifier si le vélo est déjà affilié à une autre boutique
+    if (strcmp(bike->getRentalShopId(), "") != 0) {
+        cout << "Error: Bike " << bike->getModel() << " (ID: " << bike->getBikeId() << ") is already affiliated with another rental shop (" << bike->getRentalShopId() << ")." << endl;
         return false;
     }
-    bike->setRentalShopId(id);
+
+    // Mettre à jour le shop affilié pour le vélo
+    bike->rentalShopId = id;
 
     // Si la liste de vélos est vide, ajoutez le vélo comme premier élément
     if (!HeadBike) {
@@ -172,7 +214,7 @@ bool BikeRentalShop::insertBike(Bike* bike) {
 }
 
 bool BikeRentalShop::rent(Client* client, Bike* bike) {
-    
+
     if (!client || !bike) {
         cout << "Error: Invalid client or bike." << endl;
         return false;
@@ -204,8 +246,8 @@ bool BikeRentalShop::rent(Client* client, Bike* bike) {
     }
     myBikeNode->user = client;
     myClientNode->bike = bike;
-    cout << client->getName() <<" successfuly rented the bike" << endl;
-    return false;
+    cout << client->getName() <<" successfully rented the bike" << endl;
+    return true; // Changement ici
 }
 
 bool BikeRentalShop::stopRental(Client* client) {
@@ -248,77 +290,38 @@ bool BikeRentalShop::stopRental(Client* client) {
     return true;
 }
 
-
-/*
-template<typename T>
-bool BikeRentalShop::insert(T* data) {
-    // Vérifier si les données sont valides
-    if (!data) {
-        cout << "Error: Invalid data." << endl;
+bool BikeRentalShop::stopRental(Bike* bike) {
+    if (!bike) {
+        cout << "Error: Invalid bike." << endl;
         return false;
     }
 
-    // Insérer dans la liste appropriée en fonction du type de données
-    if (std::is_same<T, Employee>::value) {
-        // Insérer dans la liste des employés
-        if (!HeadEmployee) {
-            HeadEmployee = new employeeNode;
-            HeadEmployee->employee = data;
-            HeadEmployee->next = NULL;
-        } else {
-            employeeNode* currentEmployee = HeadEmployee;
-            while (currentEmployee->next != NULL) {
-                currentEmployee = currentEmployee->next;
-            }
-            currentEmployee->next = new employeeNode;
-            currentEmployee->next->employee = data;
-            currentEmployee->next->next = NULL;
-        }
-    } else if (std::is_same<T, Client>::value) {
-        // Insérer dans la liste des clients
-        if (!HeadClient) {
-            HeadClient = new clientNode;
-            HeadClient->client = data;
-            HeadClient->bike = NULL;
-            HeadClient->next = NULL;
-        } else {
-            clientNode* currentClient = HeadClient;
-            while (currentClient->next != NULL) {
-                currentClient = currentClient->next;
-            }
-            currentClient->next = new clientNode;
-            currentClient->next->client = data;
-            currentClient->next->bike = NULL;
-            currentClient->next->next = NULL;
-        }
-    } else if (std::is_same<T, Bike>::value) {
-        // Insérer dans la liste des vélos
-        if (!HeadBike) {
-            HeadBike = new bikeNode;
-            HeadBike->bike = data;
-            HeadBike->user = NULL;
-            HeadBike->next = NULL;
-        } else {
-            bikeNode* currentBike = HeadBike;
-            while (currentBike->next != NULL) {
-                currentBike = currentBike->next;
-            }
-            currentBike->next = new bikeNode;
-            currentBike->next->bike = data;
-            currentBike->next->user = NULL;
-            currentBike->next->next = NULL;
-        }
-    } else {
-        // Type non géré
-        cout << "Error: Unsupported data type." << endl;
+    // Recherche du vélo dans la liste des vélos
+    bikeNode* myBikeNode = HeadBike;
+    while (myBikeNode && myBikeNode->bike != bike) {
+        myBikeNode = myBikeNode->next;
+    }
+    if (!myBikeNode) {
+        cout << "Error: Bike not found." << endl;
         return false;
     }
 
+    // Vérification si le vélo est loué
+    if (!myBikeNode->user) {
+        cout << "Error: This bike is not rented." << endl;
+        return false;
+    }
+
+    // Retrait du vélo et du client de la location
+    myBikeNode->user = NULL;
+    myBikeNode->user = NULL;
+    cout << "Bike successfully returned." << endl;
     return true;
 }
- */
 
-bool BikeRentalShop::removeEmployee(Employee* employee) {
+
+
+bool BikeRentalShop::remove(Employee* employee) {
     // Vérifier si l'employé est valide
     if (!employee) {
         cout << "Error: Invalid employee" << endl;
@@ -336,7 +339,7 @@ bool BikeRentalShop::removeEmployee(Employee* employee) {
             } else {
                 HeadEmployee = currentEmployee->next;
             }
-            employee->setRentalShopId(""); // Retirer l'affiliation avec le magasin de location
+            employee->rentalShopId = "";
             return true;
         }
         prevEmployee = currentEmployee;
@@ -348,7 +351,7 @@ bool BikeRentalShop::removeEmployee(Employee* employee) {
     return false;
 }
 
-bool BikeRentalShop::removeClient(Client* client) {
+bool BikeRentalShop::remove(Client* client) {
     // Vérifier si le client est valide
     if (!client) {
         cout << "Error: Invalid client." << endl;
@@ -366,7 +369,16 @@ bool BikeRentalShop::removeClient(Client* client) {
             } else {
                 HeadClient = currentClient->next;
             }
-            client->setRentalShopId(""); // Retirer l'affiliation avec le magasin de location
+            // Retirer la connexion entre le client et le vélo s'il en louait un
+            if (currentClient->bike) {
+                currentClient->bike = NULL;
+                bikeNode* currentBike = HeadBike;
+                while (currentBike->user != currentClient->client){
+                    currentBike = currentBike->next;
+                }
+                currentBike->user = NULL;
+            }
+            client->rentalShopId = "";
             return true;
         }
         prevClient = currentClient;
@@ -378,7 +390,7 @@ bool BikeRentalShop::removeClient(Client* client) {
     return false;
 }
 
-bool BikeRentalShop::removeBike(Bike* bike) {
+bool BikeRentalShop::remove(Bike* bike) {
     // Vérifier si le vélo est valide
     if (!bike) {
         cout << "Error: Invalid bike." << endl;
@@ -396,7 +408,16 @@ bool BikeRentalShop::removeBike(Bike* bike) {
             } else {
                 HeadBike = currentBike->next;
             }
-            bike->setRentalShopId(""); // Retirer l'affiliation avec le magasin de location
+            // Retirer la connexion entre le vélo et le client s'il était loué
+            if (currentBike->user) {
+                currentBike->user = NULL;
+                clientNode* currentClient = HeadClient;
+                while (currentClient->bike != currentBike->bike){
+                    currentClient = currentClient->next;
+                }
+                currentClient->bike = NULL;
+            }
+            bike->rentalShopId = "";
             return true;
         }
         prevBike = currentBike;
@@ -407,3 +428,4 @@ bool BikeRentalShop::removeBike(Bike* bike) {
     cout << "Error: Bike not found" << endl;
     return false;
 }
+

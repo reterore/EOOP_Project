@@ -2,32 +2,33 @@
 #define BIKE_H
 
 #include <iostream>
-#include <string>
 #include "Client.h"
 
 class Bike {
 private:
-    string model;
-    string id;
+    char* model;
+    char* id;
     int dailyRentalPrice;
-    string rentalShopId;
+    char* rentalShopId;
+
+    friend class BikeRentalShop; // to access data from bikeRentalShop methods
 
 public:
-    // Constructeur
-    Bike(const string& model, const string& id, int dailyRentalPrice);
+    // Constructor to initialize a Bike object with provided parameters
+    Bike(const char* model, const char* id, int dailyRentalPrice);
 
-    // Destructeur
+    // Destructor to clean up resources associated with the Bike object
     ~Bike();
 
-    // Méthode pour afficher les détails du vélo
+    // Method to print the details of the bike
     void printBike() const;
 
-    // Getters
-    const string& getModel() const { return model; }
-    const string& getBikeId() const { return id; }
+    // Getters to retrieve information about the bike
+    const char* getModel() const { return model; }
+    const char* getBikeId() const { return id; }
     int getDailyRentalPrice() const { return dailyRentalPrice; }
-    const string& getRentalShopId() const { return rentalShopId; }
-    void setRentalShopId(const string& id);
+    const char* getRentalShopId() const { return rentalShopId; }
+
 };
 
 #endif // BIKE_H
