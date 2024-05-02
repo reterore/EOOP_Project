@@ -12,12 +12,15 @@ private:
     char* name;
     char* employeeId;
     char* rentalShopId; // Using a char* object for rentalShopId
+    Employee* next;
 
     friend class BikeRentalShop; // to access data from bikeRentalShop methods
 
+    Employee() :  name(NULL), employeeId(NULL), rentalShopId(NULL), next(NULL) {}
+
 public:
     // Constructor to initialize an Employee object with provided name and ID
-    Employee(const char* n, const char* id);
+
 
     // Destructor to clean up resources associated with the Employee object
     ~Employee();

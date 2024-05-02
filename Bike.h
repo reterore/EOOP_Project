@@ -1,8 +1,11 @@
 #ifndef BIKE_H
 #define BIKE_H
 
-#include <iostream>
 #include "Client.h"
+#include <iostream>
+using namespace std;
+
+class Client;
 
 class Bike {
 private:
@@ -10,13 +13,13 @@ private:
     char* id;
     int dailyRentalPrice;
     char* rentalShopId;
+    Client* user;
+    Bike* next;
 
     friend class BikeRentalShop; // to access data from bikeRentalShop methods
 
+    Bike() : model(NULL), id(NULL), dailyRentalPrice(0), rentalShopId(NULL), user(NULL), next(NULL) {}
 public:
-    // Constructor to initialize a Bike object with provided parameters
-    Bike(const char* model, const char* id, int dailyRentalPrice);
-
     // Destructor to clean up resources associated with the Bike object
     ~Bike();
 
@@ -28,7 +31,7 @@ public:
     const char* getBikeId() const { return id; }
     int getDailyRentalPrice() const { return dailyRentalPrice; }
     const char* getRentalShopId() const { return rentalShopId; }
-
+    bool isBeingRented();
 };
 
 #endif // BIKE_H

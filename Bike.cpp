@@ -1,38 +1,25 @@
 #include "Bike.h"
-#include "cstring"
-
-Bike::Bike(const char* model, const char* id, int dailyRentalPrice) : dailyRentalPrice(dailyRentalPrice), rentalShopId("") {
-    if (!model) {
-        // Default Model
-        this->model = new char[strlen("DefaultModel") + 1];
-        strcpy(this->model, "DefaultModel");
-    } else {
-        this->model = new char[strlen(model) + 1];
-        strcpy(this->model, model);
-    }
-    if (!id) {
-        // Default Id
-        this->id = new char[strlen("DefaultBikeId") + 1];
-        strcpy(this->id, "DefaultBikeId");
-    } else {
-        this->id = new char[strlen(id) + 1];
-        strcpy(this->id, id);
-    }
-}
 
 Bike::~Bike() {
-    cout << "Bike model " << model << " (ID:" << id << ") destroyed!\n";
+    std::cout << "Bike model " << model << " (ID:" << id << ") destroyed!\n"; // Utilisation de std::cout au lieu de cout
     // Libérer la mémoire allouée pour le modèle du vélo
     delete[] model;
     // Libérer la mémoire allouée pour l'ID du vélo
     delete[] id;
+    user = NULL;
 }
 
 
 // Méthode pour afficher les détails du vélo
 void Bike::printBike() const {
-    cout << "- Model: " << model << " (ID:" << id << ") at : "<< rentalShopId << endl;
-    cout << "  Daily Rental Price: " << dailyRentalPrice << "$" <<endl;
-
+    std::cout << "- Model: " << model << " (ID:" << id << ") at : "<< rentalShopId << std::endl; // Utilisation de std::cout au lieu de cout
+    std::cout << "  Daily Rental Price: " << dailyRentalPrice << "$" <<std::endl; // Utilisation de std::cout au lieu de cout
+    if (user) {
+        cout << "  Rented by " << user->getName() << " (ID:" << user->getClientID() << ")\n";
+    } else {
+        cout << "  Available for clients\n";
+    }
 }
+
+bool Bike::isBeingRented() { return user != NULL; }
 

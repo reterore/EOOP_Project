@@ -1,25 +1,7 @@
 #include "Client.h"
 #include <iostream>
-#include "cstring"
+using namespace std; // Ajout du namespace std
 
-Client::Client(const char* name, const char* id) : rentalShopId("") {
-    if (!name) {
-        // Default Name
-        this->name = new char[strlen("DefaultClientName") + 1];
-        strcpy(this->name, "DefaultClientName");
-    } else {
-        this->name = new char[strlen(name) + 1];
-        strcpy(this->name, name);
-    }
-    if (!id) {
-        // Default Id
-        this->clientID = new char[strlen("DefaultClientId") + 1];
-        strcpy(this->clientID, "DefaultClientId");
-    } else {
-        this->clientID = new char[strlen(id) + 1];
-        strcpy(this->clientID, id);
-    }
-}
 
 Client::~Client() {
     cout << "Client " << name << " (ID:" << clientID << ") destroyed!\n";
@@ -29,9 +11,14 @@ Client::~Client() {
     delete[] clientID;
 }
 
-
-
 void Client::printClient() const {
     cout << "- (ID:" << clientID << ") | name: " << name  << " at : " << rentalShopId << endl;
+    if (bike) {
+        cout << "  Renting : " << bike->getModel() << " (ID:" << bike->getBikeId() << ")\n";
+    } else {
+        cout << "  Does not rent any bike\n";
+    }
 }
+
+bool Client::isRentingABike() { return bike != NULL; }
 
